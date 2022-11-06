@@ -1,0 +1,296 @@
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.net.InetAddress;
+import java.util.Scanner;
+
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author USER
+ */
+public class FrmServer extends javax.swing.JFrame {
+    
+    
+    
+    public class TuyenDoan extends Thread {
+//        public void run () {
+//            try {
+//                while(true) {
+//                    String st = gn.Nhan();
+//                    list3.add(st);
+//            }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+        public void run() {
+            try {
+                while(true) {
+                    String st = gn.Nhan();
+                    list3.add(st);
+                    
+                    String name = InetAddress.getLocalHost().getHostAddress();
+                    String[] ds = st.split("[:]");
+                    String ipclient = ds[0];
+                    String cp = ds[1];
+                    String[] arrSo =  ds[1].split("[;]");
+                    String type = arrSo[0];
+                    
+                    if(cp.equals("/tm"))
+                        gn.Gui("Lap trinh phan tan", ipclient, 5001);
+                    else if(cp.equals("/ht"))
+                        gn.Gui(name, ipclient, 5001);
+                    // so so
+                    else if(type.equals("/+")) {     
+//                        String[] arrSo =  ds[1].split("[;]");
+                        int sum = 0;
+                        int max = 0;
+                        int min = Integer.parseInt(arrSo[1]);
+                        int count = 0;
+                        int n = arrSo.length;
+                        for(int i= 1; i< n; i++){
+                            sum = sum + Integer.parseInt(arrSo[i]);
+                            if (Integer.parseInt(arrSo[i]) > max) {
+                                max = Integer.parseInt(arrSo[i]);
+                            }
+                            if (Integer.parseInt(arrSo[i]) < min) {
+                                min = Integer.parseInt(arrSo[i]);
+                            }
+                            count++;
+                        }
+                        gn.Gui("Sum: "+String.valueOf(sum), ipclient, 5001);
+                        gn.Gui("Max: "+String.valueOf(max), ipclient, 5001);
+                        gn.Gui("Min: "+String.valueOf(min), ipclient, 5001);
+                        gn.Gui("Numbers: "+String.valueOf(count), ipclient, 5001);
+                    }
+                    // quit
+                    else if(cp.equals("/quit"))
+                        gn.Gui("quit", ipclient, 5001);
+                    //mo file
+                    else if(cp.equals("/xskt")){
+                        gn.Gui("kqsx.txt", ipclient, 5001);
+                        String url = "D:\\LTPT\\JavaApplication3\\src\\kqsx.txt";
+                        FileInputStream reader = new FileInputStream(url);
+                        Scanner scanner = new Scanner(reader);
+                        
+                        try {
+                            while (scanner.hasNextLine()) {
+                                gn.Gui((scanner.nextLine()), ipclient, 5001);
+                            }
+                        } finally {
+                            try {
+                                scanner.close();
+                                reader.close();
+                            } catch (Exception e) {
+                                System.out.println(e);
+                            }
+                        }
+                    }  
+                       
+                    //notepad
+                    else if(cp.equals("/notepad")){
+                        gn.Gui("Open notepad", ipclient, 5001);
+                        Runtime.getRuntime().exec("notepad");
+                    }
+                    //excel
+                    else if(cp.equals("/excel")){
+                        gn.Gui("Open excel", ipclient, 5001);
+                         Runtime.getRuntime().exec("\"C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\EXCEL.EXE\"");
+                    }
+                    else if(cp.equals("/shutdown")){
+                        gn.Gui("Shutdown", ipclient, 5001);
+                         Runtime.getRuntime().exec("shutdown.exe -s -t 0");
+                    }
+                    
+                    
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    /**
+     * Creates new form FrmServer
+     */
+    public FrmServer() {
+        initComponents();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        list1 = new java.awt.List();
+        list3 = new java.awt.List();
+        txtSend = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        Ipserver = new javax.swing.JLabel();
+        txtIp = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        txtPort = new javax.swing.JTextField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+
+        txtSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSendActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Send");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        Ipserver.setText("IpServer");
+
+        txtIp.setText("192.168.1.4");
+
+        jLabel1.setText("Port");
+
+        txtPort.setText("5001");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Ipserver)
+                        .addGap(30, 30, 30)
+                        .addComponent(txtIp, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(70, 70, 70)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(list3, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
+                        .addComponent(txtSend)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(70, 70, 70))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(110, Short.MAX_VALUE))))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Ipserver)
+                    .addComponent(txtIp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addComponent(list3, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+    GuiNhan gn = new GuiNhan();
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        try {
+            gn.MoCong(5000);
+            TuyenDoan td = new TuyenDoan();
+            td.start();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+            String ipclient= InetAddress.getLocalHost().getHostAddress();
+            String ipserver = txtIp.getText();
+            String cong= txtPort.getText();
+            String data = txtSend.getText();
+            data=ipserver+":"+data;
+            
+            gn.Gui(data, ipserver, Integer.parseInt(cong));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSendActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSendActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(FrmServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(FrmServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(FrmServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FrmServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FrmServer().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Ipserver;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private java.awt.List list1;
+    private java.awt.List list3;
+    private javax.swing.JTextField txtIp;
+    private javax.swing.JTextField txtPort;
+    private javax.swing.JTextField txtSend;
+    // End of variables declaration//GEN-END:variables
+}
